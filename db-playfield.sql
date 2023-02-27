@@ -11,7 +11,7 @@
  Target Server Version : 50733
  File Encoding         : 65001
 
- Date: 15/02/2023 20:41:13
+ Date: 27/02/2023 15:27:23
 */
 
 SET NAMES utf8mb4;
@@ -44,8 +44,7 @@ INSERT INTO `auth` VALUES (1, 'admin@mail.com', '$2y$10$.9WpUCD7eAEyFNy1fXUWK.zh
 -- ----------------------------
 DROP TABLE IF EXISTS `bussiness_references`;
 CREATE TABLE `bussiness_references`  (
-  `id` int(10) NOT NULL,
-  `id_member` int(10) NOT NULL,
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` varchar(40) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `company` varchar(40) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `profile` text CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL,
@@ -53,12 +52,22 @@ CREATE TABLE `bussiness_references`  (
   `address` text CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL,
   `website` varchar(40) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `phone_number` varchar(12) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`id`, `id_member`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+  `cover_image` text CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL,
+  `created_at` datetime NULL DEFAULT NULL,
+  `created_by` varchar(40) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
+  `updated_at` datetime NULL DEFAULT NULL,
+  `updated_by` varchar(40) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of bussiness_references
 -- ----------------------------
+INSERT INTO `bussiness_references` VALUES (1, 'Mattew', '', 'Tempor phasellus ultrices magna aliquam accumsan. Ullamcorper nulla cursus commodo lobortis ipsum enim inter ac.', 'mattew@company.com', NULL, NULL, '082121000943', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `bussiness_references` VALUES (2, 'Alan', '', 'Tempor phasellus ultrices magna aliquam accumsan. Ullamcorper nulla cursus commodo lobortis ipsum enim inter ac.', 'alan@company.com', NULL, NULL, '082121000944', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `bussiness_references` VALUES (3, 'Steve', '', 'Tempor phasellus ultrices magna aliquam accumsan. Ullamcorper nulla cursus commodo lobortis ipsum enim inter ac.', 'steve@company.com', NULL, NULL, '082121000945', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `bussiness_references` VALUES (4, 'test', 'company test', NULL, 'test_email@mailsac.com', NULL, 'www.test_company.com', '082121000945', NULL, '2023-02-27 07:50:50', 'John Cena', NULL, NULL);
+INSERT INTO `bussiness_references` VALUES (5, 'test', 'company test', NULL, 'test_email@mailsac.com', NULL, 'www.test_company.com', '082121000945', NULL, '2023-02-27 07:51:03', 'John Cena', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for class
@@ -69,7 +78,7 @@ CREATE TABLE `class`  (
   `category_id` int(10) NOT NULL,
   `class_type` tinyint(1) NULL DEFAULT NULL,
   `class_name` varchar(40) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
-  `start_time` time NULL DEFAULT NULL,
+  `start_time` datetime NULL DEFAULT NULL,
   `cover_image` text CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL,
   `description` text CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL,
   `location` varchar(60) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
@@ -78,18 +87,19 @@ CREATE TABLE `class`  (
   `created_by` varchar(30) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `updated_at` datetime NULL DEFAULT NULL,
   `updated_by` varchar(30) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
+  `end_time` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`id`, `category_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of class
 -- ----------------------------
-INSERT INTO `class` VALUES (1, 1, 1, 'Weightlift Class', '14:05:38', NULL, '<p><span style=\"color: rgb(0, 0, 0); font-family: &quot;Open Sans&quot;, Arial, sans-serif; font-size: 14px; text-align: justify;\">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum laoreet gravida diam eu dictum. Duis malesuada a arcu ac accumsan. Proin ultrices nibh ex, finibus sodales eros finibus eu. Nunc id est vitae mauris facilisis hendrerit. Mauris sapien dui, malesuada a sapien eget, molestie malesuada diam. Morbi scelerisque sem mauris, at fringilla eros finibus eu. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed malesuada, urna non accumsan finibus, arcu sem mattis justo, et eleifend turpis turpis id tortor. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Vestibulum rutrum dignissim scelerisque. Nulla volutpat, nunc sit amet luctus mattis, odio diam lacinia sapien, ut fringilla massa mi at diam. Nam rutrum porta congue. Donec in ipsum elit. Fusce consectetur ligula eu augue sollicitudin, nec facilisis nunc mollis.</span><br></p>', NULL, 10, NULL, NULL, NULL, NULL);
-INSERT INTO `class` VALUES (2, 1, 1, 'Bodyweight Tra..', '15:06:25', NULL, '<p><span style=\"color: rgb(0, 0, 0); font-family: &quot;Open Sans&quot;, Arial, sans-serif; font-size: 14px; text-align: justify;\">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum laoreet gravida diam eu dictum. Duis malesuada a arcu ac accumsan. Proin ultrices nibh ex, finibus sodales eros finibus eu. Nunc id est vitae mauris facilisis hendrerit. Mauris sapien dui, malesuada a sapien eget, molestie malesuada diam. Morbi scelerisque sem mauris, at fringilla eros finibus eu. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed malesuada, urna non accumsan finibus, arcu sem mattis justo, et eleifend turpis turpis id tortor. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Vestibulum rutrum dignissim scelerisque. Nulla volutpat, nunc sit amet luctus mattis, odio diam lacinia sapien, ut fringilla massa mi at diam. Nam rutrum porta congue. Donec in ipsum elit. Fusce consectetur ligula eu augue sollicitudin, nec facilisis nunc mollis.</span><br></p>', NULL, 11, NULL, NULL, NULL, NULL);
-INSERT INTO `class` VALUES (3, 1, 1, 'Class 3', '16:06:51', NULL, '<p><span style=\"color: rgb(0, 0, 0); font-family: &quot;Open Sans&quot;, Arial, sans-serif; font-size: 14px; text-align: justify;\">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum laoreet gravida diam eu dictum. Duis malesuada a arcu ac accumsan. Proin ultrices nibh ex, finibus sodales eros finibus eu. Nunc id est vitae mauris facilisis hendrerit. Mauris sapien dui, malesuada a sapien eget, molestie malesuada diam. Morbi scelerisque sem mauris, at fringilla eros finibus eu. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed malesuada, urna non accumsan finibus, arcu sem mattis justo, et eleifend turpis turpis id tortor. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Vestibulum rutrum dignissim scelerisque. Nulla volutpat, nunc sit amet luctus mattis, odio diam lacinia sapien, ut fringilla massa mi at diam. Nam rutrum porta congue. Donec in ipsum elit. Fusce consectetur ligula eu augue sollicitudin, nec facilisis nunc mollis.</span><br></p>', NULL, 5, NULL, NULL, NULL, NULL);
-INSERT INTO `class` VALUES (4, 2, 1, 'Lorem ipsum ads 1', '12:07:11', NULL, '<p><span style=\"color: rgb(0, 0, 0); font-family: &quot;Open Sans&quot;, Arial, sans-serif; font-size: 14px; text-align: justify;\">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum laoreet gravida diam eu dictum. Duis malesuada a arcu ac accumsan. Proin ultrices nibh ex, finibus sodales eros finibus eu. Nunc id est vitae mauris facilisis hendrerit. Mauris sapien dui, malesuada a sapien eget, molestie malesuada diam. Morbi scelerisque sem mauris, at fringilla eros finibus eu. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed malesuada, urna non accumsan finibus, arcu sem mattis justo, et eleifend turpis turpis id tortor. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Vestibulum rutrum dignissim scelerisque. Nulla volutpat, nunc sit amet luctus mattis, odio diam lacinia sapien, ut fringilla massa mi at diam. Nam rutrum porta congue. Donec in ipsum elit. Fusce consectetur ligula eu augue sollicitudin, nec facilisis nunc mollis.</span><br></p>', NULL, 20, NULL, NULL, NULL, NULL);
-INSERT INTO `class` VALUES (5, 2, 1, 'Lorem ipsum ads 2', '13:07:31', NULL, '<p><span style=\"color: rgb(0, 0, 0); font-family: &quot;Open Sans&quot;, Arial, sans-serif; font-size: 14px; text-align: justify;\">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum laoreet gravida diam eu dictum. Duis malesuada a arcu ac accumsan. Proin ultrices nibh ex, finibus sodales eros finibus eu. Nunc id est vitae mauris facilisis hendrerit. Mauris sapien dui, malesuada a sapien eget, molestie malesuada diam. Morbi scelerisque sem mauris, at fringilla eros finibus eu. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed malesuada, urna non accumsan finibus, arcu sem mattis justo, et eleifend turpis turpis id tortor. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Vestibulum rutrum dignissim scelerisque. Nulla volutpat, nunc sit amet luctus mattis, odio diam lacinia sapien, ut fringilla massa mi at diam. Nam rutrum porta congue. Donec in ipsum elit. Fusce consectetur ligula eu augue sollicitudin, nec facilisis nunc mollis.</span><br></p>', NULL, 10, NULL, NULL, NULL, NULL);
-INSERT INTO `class` VALUES (6, 3, 1, 'Lorem ipsum ads 2', '13:07:31', NULL, '<p><span style=\"color: rgb(0, 0, 0); font-family: &quot;Open Sans&quot;, Arial, sans-serif; font-size: 14px; text-align: justify;\">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum laoreet gravida diam eu dictum. Duis malesuada a arcu ac accumsan. Proin ultrices nibh ex, finibus sodales eros finibus eu. Nunc id est vitae mauris facilisis hendrerit. Mauris sapien dui, malesuada a sapien eget, molestie malesuada diam. Morbi scelerisque sem mauris, at fringilla eros finibus eu. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed malesuada, urna non accumsan finibus, arcu sem mattis justo, et eleifend turpis turpis id tortor. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Vestibulum rutrum dignissim scelerisque. Nulla volutpat, nunc sit amet luctus mattis, odio diam lacinia sapien, ut fringilla massa mi at diam. Nam rutrum porta congue. Donec in ipsum elit. Fusce consectetur ligula eu augue sollicitudin, nec facilisis nunc mollis.</span><br></p>', NULL, 10, NULL, NULL, NULL, NULL);
+INSERT INTO `class` VALUES (1, 1, 1, 'Weightlift Class', '2023-02-27 14:05:38', NULL, '<p><span style=\"color: rgb(0, 0, 0); font-family: &quot;Open Sans&quot;, Arial, sans-serif; font-size: 14px; text-align: justify;\">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum laoreet gravida diam eu dictum. Duis malesuada a arcu ac accumsan. Proin ultrices nibh ex, finibus sodales eros finibus eu. Nunc id est vitae mauris facilisis hendrerit. Mauris sapien dui, malesuada a sapien eget, molestie malesuada diam. Morbi scelerisque sem mauris, at fringilla eros finibus eu. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed malesuada, urna non accumsan finibus, arcu sem mattis justo, et eleifend turpis turpis id tortor. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Vestibulum rutrum dignissim scelerisque. Nulla volutpat, nunc sit amet luctus mattis, odio diam lacinia sapien, ut fringilla massa mi at diam. Nam rutrum porta congue. Donec in ipsum elit. Fusce consectetur ligula eu augue sollicitudin, nec facilisis nunc mollis.</span><br></p>', NULL, 10, NULL, NULL, NULL, NULL, '2023-02-27 14:05:38');
+INSERT INTO `class` VALUES (2, 1, 1, 'Bodyweight Tra..', '2023-02-27 15:06:25', NULL, '<p><span style=\"color: rgb(0, 0, 0); font-family: &quot;Open Sans&quot;, Arial, sans-serif; font-size: 14px; text-align: justify;\">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum laoreet gravida diam eu dictum. Duis malesuada a arcu ac accumsan. Proin ultrices nibh ex, finibus sodales eros finibus eu. Nunc id est vitae mauris facilisis hendrerit. Mauris sapien dui, malesuada a sapien eget, molestie malesuada diam. Morbi scelerisque sem mauris, at fringilla eros finibus eu. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed malesuada, urna non accumsan finibus, arcu sem mattis justo, et eleifend turpis turpis id tortor. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Vestibulum rutrum dignissim scelerisque. Nulla volutpat, nunc sit amet luctus mattis, odio diam lacinia sapien, ut fringilla massa mi at diam. Nam rutrum porta congue. Donec in ipsum elit. Fusce consectetur ligula eu augue sollicitudin, nec facilisis nunc mollis.</span><br></p>', NULL, 11, NULL, NULL, NULL, NULL, '2023-02-27 14:05:38');
+INSERT INTO `class` VALUES (3, 1, 1, 'Class 3', '2023-02-27 16:06:51', NULL, '<p><span style=\"color: rgb(0, 0, 0); font-family: &quot;Open Sans&quot;, Arial, sans-serif; font-size: 14px; text-align: justify;\">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum laoreet gravida diam eu dictum. Duis malesuada a arcu ac accumsan. Proin ultrices nibh ex, finibus sodales eros finibus eu. Nunc id est vitae mauris facilisis hendrerit. Mauris sapien dui, malesuada a sapien eget, molestie malesuada diam. Morbi scelerisque sem mauris, at fringilla eros finibus eu. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed malesuada, urna non accumsan finibus, arcu sem mattis justo, et eleifend turpis turpis id tortor. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Vestibulum rutrum dignissim scelerisque. Nulla volutpat, nunc sit amet luctus mattis, odio diam lacinia sapien, ut fringilla massa mi at diam. Nam rutrum porta congue. Donec in ipsum elit. Fusce consectetur ligula eu augue sollicitudin, nec facilisis nunc mollis.</span><br></p>', NULL, 5, NULL, NULL, NULL, NULL, '2023-02-27 14:05:38');
+INSERT INTO `class` VALUES (4, 2, 1, 'Lorem ipsum ads 1', '2023-02-27 12:07:11', NULL, '<p><span style=\"color: rgb(0, 0, 0); font-family: &quot;Open Sans&quot;, Arial, sans-serif; font-size: 14px; text-align: justify;\">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum laoreet gravida diam eu dictum. Duis malesuada a arcu ac accumsan. Proin ultrices nibh ex, finibus sodales eros finibus eu. Nunc id est vitae mauris facilisis hendrerit. Mauris sapien dui, malesuada a sapien eget, molestie malesuada diam. Morbi scelerisque sem mauris, at fringilla eros finibus eu. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed malesuada, urna non accumsan finibus, arcu sem mattis justo, et eleifend turpis turpis id tortor. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Vestibulum rutrum dignissim scelerisque. Nulla volutpat, nunc sit amet luctus mattis, odio diam lacinia sapien, ut fringilla massa mi at diam. Nam rutrum porta congue. Donec in ipsum elit. Fusce consectetur ligula eu augue sollicitudin, nec facilisis nunc mollis.</span><br></p>', NULL, 20, NULL, NULL, NULL, NULL, '2023-02-27 14:05:38');
+INSERT INTO `class` VALUES (5, 2, 1, 'Lorem ipsum ads 2', '2023-02-27 13:07:31', NULL, '<p><span style=\"color: rgb(0, 0, 0); font-family: &quot;Open Sans&quot;, Arial, sans-serif; font-size: 14px; text-align: justify;\">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum laoreet gravida diam eu dictum. Duis malesuada a arcu ac accumsan. Proin ultrices nibh ex, finibus sodales eros finibus eu. Nunc id est vitae mauris facilisis hendrerit. Mauris sapien dui, malesuada a sapien eget, molestie malesuada diam. Morbi scelerisque sem mauris, at fringilla eros finibus eu. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed malesuada, urna non accumsan finibus, arcu sem mattis justo, et eleifend turpis turpis id tortor. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Vestibulum rutrum dignissim scelerisque. Nulla volutpat, nunc sit amet luctus mattis, odio diam lacinia sapien, ut fringilla massa mi at diam. Nam rutrum porta congue. Donec in ipsum elit. Fusce consectetur ligula eu augue sollicitudin, nec facilisis nunc mollis.</span><br></p>', NULL, 10, NULL, NULL, NULL, NULL, '2023-02-27 14:05:38');
+INSERT INTO `class` VALUES (6, 3, 1, 'Lorem ipsum ads 2', '2023-02-27 13:07:31', NULL, '<p><span style=\"color: rgb(0, 0, 0); font-family: &quot;Open Sans&quot;, Arial, sans-serif; font-size: 14px; text-align: justify;\">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum laoreet gravida diam eu dictum. Duis malesuada a arcu ac accumsan. Proin ultrices nibh ex, finibus sodales eros finibus eu. Nunc id est vitae mauris facilisis hendrerit. Mauris sapien dui, malesuada a sapien eget, molestie malesuada diam. Morbi scelerisque sem mauris, at fringilla eros finibus eu. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed malesuada, urna non accumsan finibus, arcu sem mattis justo, et eleifend turpis turpis id tortor. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Vestibulum rutrum dignissim scelerisque. Nulla volutpat, nunc sit amet luctus mattis, odio diam lacinia sapien, ut fringilla massa mi at diam. Nam rutrum porta congue. Donec in ipsum elit. Fusce consectetur ligula eu augue sollicitudin, nec facilisis nunc mollis.</span><br></p>', NULL, 10, NULL, NULL, NULL, NULL, '2023-02-27 14:05:38');
 
 -- ----------------------------
 -- Table structure for class_booking
@@ -107,11 +117,12 @@ CREATE TABLE `class_booking`  (
   `updated_at` datetime NULL DEFAULT NULL,
   `updated_by` varchar(30) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`, `class_id`, `member_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of class_booking
 -- ----------------------------
+INSERT INTO `class_booking` VALUES (1, 1, 1, 'GroupClass0227080700001', NULL, 1, '2023-02-27 08:07:40', 'John Cena', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for class_category
@@ -182,6 +193,45 @@ CREATE TABLE `event`  (
 INSERT INTO `event` VALUES (1, 'Annual Playfield Premium Event', 'Vitae sem quis et suspendisse pellentesque cursus iaculis. Magna dui ullamcorper at aliquam eget. Euismod odio amet ornare quis. In eget arcu purus urna netus pellentesque.\r\n\r\nEt mauris nisi feugiat id nunc.', NULL, '2023-02-07 10:29:31', 'The City Ballroom', 200, 500000, NULL, NULL, NULL, NULL);
 INSERT INTO `event` VALUES (2, 'Annual Playfield Premium Event', 'Vitae sem quis et suspendisse pellentesque cursus iaculis. Magna dui ullamcorper at aliquam eget. Euismod odio amet ornare quis. In eget arcu purus urna netus pellentesque.\r\n\r\nEt mauris nisi feugiat id nunc.', NULL, '2023-02-08 10:29:31', 'The City Ballroom', 100, 1000000, NULL, NULL, NULL, NULL);
 INSERT INTO `event` VALUES (3, 'Annual Playfield Premium Event', 'Vitae sem quis et suspendisse pellentesque cursus iaculis. Magna dui ullamcorper at aliquam eget. Euismod odio amet ornare quis. In eget arcu purus urna netus pellentesque.\r\n\r\nEt mauris nisi feugiat id nunc.', NULL, '2023-02-08 10:29:31', 'The City Ballroom', 40, 1500000, NULL, NULL, NULL, NULL);
+
+-- ----------------------------
+-- Table structure for event_booked
+-- ----------------------------
+DROP TABLE IF EXISTS `event_booked`;
+CREATE TABLE `event_booked`  (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `event_id` int(10) NOT NULL,
+  `member_id` int(10) NOT NULL,
+  `created_at` datetime NULL DEFAULT NULL,
+  `created_by` varchar(40) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
+  `updated_at` datetime NULL DEFAULT NULL,
+  `updated_by` varchar(40) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`id`, `event_id`, `member_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of event_booked
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for event_gallery
+-- ----------------------------
+DROP TABLE IF EXISTS `event_gallery`;
+CREATE TABLE `event_gallery`  (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `event_id` int(10) NOT NULL,
+  `image` text CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL,
+  `video` text CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL,
+  `created_at` datetime NULL DEFAULT NULL,
+  `created_by` varchar(40) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
+  `updated_at` datetime NULL DEFAULT NULL,
+  `updated_by` varchar(40) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`id`, `event_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of event_gallery
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for facilities
@@ -268,12 +318,14 @@ CREATE TABLE `member`  (
   `created_by` varchar(30) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `updated_at` datetime NULL DEFAULT NULL,
   `updated_by` varchar(30) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
+  `id_business_index` int(10) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of member
 -- ----------------------------
+INSERT INTO `member` VALUES (1, '0001', 'John', 'Cena', '081546995801', 'jonh-cena@mailsac.com', 'Bandung', NULL, '2023-02-27 13:33:07', NULL, '2023-02-27 07:38:24', 'John Cena', 5);
 
 -- ----------------------------
 -- Table structure for membership
@@ -290,11 +342,12 @@ CREATE TABLE `membership`  (
   `updated_at` datetime NULL DEFAULT NULL,
   `updated_by` varchar(30) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`, `skin_type`, `member_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of membership
 -- ----------------------------
+INSERT INTO `membership` VALUES (1, 1, 1, '2023-02-27 14:20:39', '2024-02-27 14:20:42', NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for migrations
@@ -305,7 +358,7 @@ CREATE TABLE `migrations`  (
   `migration` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int(11) NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of migrations
@@ -313,6 +366,8 @@ CREATE TABLE `migrations`  (
 INSERT INTO `migrations` VALUES (1, '2014_10_12_000000_create_users_table', 1);
 INSERT INTO `migrations` VALUES (2, '2014_10_12_100000_create_password_resets_table', 1);
 INSERT INTO `migrations` VALUES (3, '2019_08_19_000000_create_failed_jobs_table', 1);
+INSERT INTO `migrations` VALUES (4, '2014_10_12_100000_create_password_reset_tokens_table', 2);
+INSERT INTO `migrations` VALUES (5, '2019_12_14_000001_create_personal_access_tokens_table', 2);
 
 -- ----------------------------
 -- Table structure for news
@@ -335,9 +390,9 @@ CREATE TABLE `news`  (
 -- ----------------------------
 -- Records of news
 -- ----------------------------
-INSERT INTO `news` VALUES (1, 1, 1, 'Lorem Ipsum Dolot Sit Amet', 'Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem, quia voluptas sit, aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos, qui ratione voluptatem sequi nesciunt, neque porro quisquam est, qui dolorem ipsum, quia dolor sit amet consectetur adipisci[ng] velit, sed quia non numquam [do] eius modi tempora inci[di]dunt, ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum[d] exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit, qui in ea voluptate velit esse, quam nihil molestiae consequatur, vel illum, qui dolorem eum fugiat, quo voluptas nulla pariatur?  At vero eos et accusamus et iusto odio dignissimo.', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `news` VALUES (2, 2, 1, 'Lorem Ipsum Dolot Sit Amet', 'Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem, quia voluptas sit, aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos, qui ratione voluptatem sequi nesciunt, neque porro quisquam est, qui dolorem ipsum, quia dolor sit amet consectetur adipisci[ng] velit, sed quia non numquam [do] eius modi tempora inci[di]dunt, ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum[d] exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit, qui in ea voluptate velit esse, quam nihil molestiae consequatur, vel illum, qui dolorem eum fugiat, quo voluptas nulla pariatur?  At vero eos et accusamus et iusto odio dignissimo.', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `news` VALUES (3, 1, 0, 'Lorem Ipsum Dolot Sit Amet', 'Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem, quia voluptas sit, aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos, qui ratione voluptatem sequi nesciunt, neque porro quisquam est, qui dolorem ipsum, quia dolor sit amet consectetur adipisci[ng] velit, sed quia non numquam [do] eius modi tempora inci[di]dunt, ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum[d] exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit, qui in ea voluptate velit esse, quam nihil molestiae consequatur, vel illum, qui dolorem eum fugiat, quo voluptas nulla pariatur?  At vero eos et accusamus et iusto odio dignissimo.', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `news` VALUES (1, 1, 1, 'Ipsum Dolot Sit Amet', 'Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem, quia voluptas sit, aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos, qui ratione voluptatem sequi nesciunt, neque porro quisquam est, qui dolorem ipsum, quia dolor sit amet consectetur adipisci[ng] velit, sed quia non numquam [do] eius modi tempora inci[di]dunt, ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum[d] exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit, qui in ea voluptate velit esse, quam nihil molestiae consequatur, vel illum, qui dolorem eum fugiat, quo voluptas nulla pariatur?  At vero eos et accusamus et iusto odio dignissimo.', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `news` VALUES (2, 2, 1, 'Lorem2 Ipsum Dolot Sit Amet', 'Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem, quia voluptas sit, aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos, qui ratione voluptatem sequi nesciunt, neque porro quisquam est, qui dolorem ipsum, quia dolor sit amet consectetur adipisci[ng] velit, sed quia non numquam [do] eius modi tempora inci[di]dunt, ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum[d] exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit, qui in ea voluptate velit esse, quam nihil molestiae consequatur, vel illum, qui dolorem eum fugiat, quo voluptas nulla pariatur?  At vero eos et accusamus et iusto odio dignissimo.', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `news` VALUES (3, 1, 0, 'Lorem3 Ipsum Dolot Sit Amet', 'Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem, quia voluptas sit, aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos, qui ratione voluptatem sequi nesciunt, neque porro quisquam est, qui dolorem ipsum, quia dolor sit amet consectetur adipisci[ng] velit, sed quia non numquam [do] eius modi tempora inci[di]dunt, ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum[d] exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit, qui in ea voluptate velit esse, quam nihil molestiae consequatur, vel illum, qui dolorem eum fugiat, quo voluptas nulla pariatur?  At vero eos et accusamus et iusto odio dignissimo.', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `news` VALUES (4, 1, 0, 'Lorem Ipsum Dolot Sit Amet', 'Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem, quia voluptas sit, aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos, qui ratione voluptatem sequi nesciunt, neque porro quisquam est, qui dolorem ipsum, quia dolor sit amet consectetur adipisci[ng] velit, sed quia non numquam [do] eius modi tempora inci[di]dunt, ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum[d] exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit, qui in ea voluptate velit esse, quam nihil molestiae consequatur, vel illum, qui dolorem eum fugiat, quo voluptas nulla pariatur?  At vero eos et accusamus et iusto odio dignissimo.', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `news` VALUES (5, 1, 0, 'Lorem Ipsum Dolot Sit Amet', 'Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem, quia voluptas sit, aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos, qui ratione voluptatem sequi nesciunt, neque porro quisquam est, qui dolorem ipsum, quia dolor sit amet consectetur adipisci[ng] velit, sed quia non numquam [do] eius modi tempora inci[di]dunt, ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum[d] exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit, qui in ea voluptate velit esse, quam nihil molestiae consequatur, vel illum, qui dolorem eum fugiat, quo voluptas nulla pariatur?  At vero eos et accusamus et iusto odio dignissimo.', NULL, NULL, NULL, NULL, NULL);
 
@@ -366,6 +421,21 @@ INSERT INTO `news_category` VALUES (4, 'Food', 4, NULL, NULL, NULL, NULL);
 INSERT INTO `news_category` VALUES (5, 'Politics', 5, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
+-- Table structure for password_reset_tokens
+-- ----------------------------
+DROP TABLE IF EXISTS `password_reset_tokens`;
+CREATE TABLE `password_reset_tokens`  (
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`email`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of password_reset_tokens
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for password_resets
 -- ----------------------------
 DROP TABLE IF EXISTS `password_resets`;
@@ -378,6 +448,30 @@ CREATE TABLE `password_resets`  (
 
 -- ----------------------------
 -- Records of password_resets
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for personal_access_tokens
+-- ----------------------------
+DROP TABLE IF EXISTS `personal_access_tokens`;
+CREATE TABLE `personal_access_tokens`  (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `tokenable_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tokenable_id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `abilities` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL,
+  `last_used_at` timestamp NULL DEFAULT NULL,
+  `expires_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `personal_access_tokens_token_unique`(`token`) USING BTREE,
+  INDEX `personal_access_tokens_tokenable_type_tokenable_id_index`(`tokenable_type`, `tokenable_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of personal_access_tokens
 -- ----------------------------
 
 -- ----------------------------
@@ -411,7 +505,6 @@ INSERT INTO `room` VALUES (3, 'Karaoke Room', '3rd Floor', NULL, 1, '<p><span st
 DROP TABLE IF EXISTS `room_booking`;
 CREATE TABLE `room_booking`  (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `benefits_id` int(10) NOT NULL,
   `member_id` int(10) NOT NULL,
   `booking_code` varchar(30) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `time_attended` datetime NULL DEFAULT NULL,
@@ -419,13 +512,14 @@ CREATE TABLE `room_booking`  (
   `created_by` varchar(30) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `updated_at` datetime NULL DEFAULT NULL,
   `updated_by` varchar(30) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`id`, `benefits_id`, `member_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+  PRIMARY KEY (`id`, `member_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of room_booking
 -- ----------------------------
-INSERT INTO `room_booking` VALUES (1, 1, 1, '001', '2023-02-15 15:32:11', NULL, NULL, NULL, NULL);
+INSERT INTO `room_booking` VALUES (1, 1, '001', '2023-02-15 15:32:11', NULL, NULL, NULL, NULL);
+INSERT INTO `room_booking` VALUES (3, 1, '0227064400001', NULL, '2023-02-27 06:44:57', 'John Cena', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for room_booking_detail
@@ -442,12 +536,13 @@ CREATE TABLE `room_booking_detail`  (
   `updated_by` varchar(40) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `date_booked` date NULL DEFAULT NULL,
   PRIMARY KEY (`id`, `booked_id`, `room_schedule_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of room_booking_detail
 -- ----------------------------
 INSERT INTO `room_booking_detail` VALUES (1, 1, 2, '15:35:05', NULL, NULL, NULL, NULL, '2023-02-15');
+INSERT INTO `room_booking_detail` VALUES (3, 3, 3, '15:35:05', NULL, NULL, NULL, NULL, '2023-02-27');
 
 -- ----------------------------
 -- Table structure for room_gallery
@@ -528,11 +623,14 @@ CREATE TABLE `skin_type`  (
   `updated_at` datetime NULL DEFAULT NULL,
   `updated_by` varchar(30) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of skin_type
 -- ----------------------------
+INSERT INTO `skin_type` VALUES (1, 'Diamond', NULL, NULL, NULL, NULL);
+INSERT INTO `skin_type` VALUES (2, 'Gold', NULL, NULL, NULL, NULL);
+INSERT INTO `skin_type` VALUES (3, 'Platinum', NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for system_group
