@@ -11,9 +11,19 @@ use App\Models\M_news;
 class C_news extends Controller
 {
 
-    public function get(){
+    public function get($name = null){
         $response = array();
-        $query = M_news_category::with('category_to_news')->orderBy('order','ASC')->get();
+        if($name == null){
+            $query = M_news_category::with('category_to_news')->orderBy('order','ASC')->get();
+        }else{
+            $query = M_news_category::with('category_to_news')
+            ->where('category', 'like', "%".$name."%")
+            ->orWhereHas('category_to_news', function($q) use ($name) { 
+                $q->where('title', 'like', '%'.$name.'%');
+              })
+            ->orderBy('order','ASC')->get();
+        }
+       
         if(count($query) > 0){
             $response['metadata']['message']='success';
             $response['metadata']['code']=200;

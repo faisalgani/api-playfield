@@ -17,6 +17,7 @@ class M_class extends Model
         'class_type',
         'class_name',
         'start_time',
+        'end_time',
         'description',
         'cover_image',
         'capacity',

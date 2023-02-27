@@ -5,16 +5,18 @@ namespace App\Http\Controllers\Mobile;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\M_facilities_category;
-use App\Models\M_facilities;
 
-class C_facilities extends Controller
+class C_business_index extends Controller
 {
 
-    public function get(){
+    public function get($name = null){
         $response = array();
-        $query = M_facilities_category::with('category_to_facilities')->orderBy('sort_order','ASC')->get();
-      
+        if($name == null){
+            $query = DB::select("SELECT id, name,created_at,company FROM bussiness_references ORDER BY name ASC");
+        }else{
+            $query = DB::select("SELECT id, name,created_at,company FROM bussiness_references WHERE name like '%".$name."%' ORDER BY name ASC");
+        }
+       
         if(count($query) > 0){
             $response['metadata']['message']='success';
             $response['metadata']['code']=200;
@@ -26,9 +28,10 @@ class C_facilities extends Controller
         return response()->json($response);
     }
 
+
     public function get_detail($id){
         $response = array();
-        $query = M_facilities::where('id','=',$id)->get();
+        $query = DB::select("SELECT * FROM bussiness_references WHERE id='".$id."'");
       
         if(count($query) > 0){
             $response['metadata']['message']='success';

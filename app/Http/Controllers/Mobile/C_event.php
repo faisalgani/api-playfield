@@ -27,4 +27,18 @@ class C_event extends Controller
         }
         return response()->json($response);
     }
+    public function get_detail_event($id){
+        $response = array();
+        $query = M_event::with('event_to_gallery')->where('id','=',$id)->get();
+      
+        if(count($query) > 0){
+            $response['metadata']['message']='success';
+            $response['metadata']['code']=200;
+            $response['data'] = $query;
+        }else{
+            $response['metadata']['message']='failed data not found';
+            $response['metadata']['code']=400;
+        }
+        return response()->json($response);
+    }
 }
