@@ -14,46 +14,65 @@ class C_class extends Controller
     public function get_group_class(Request $request){
         $response = array();
         $name = $request->query('name');
-        if($name == null){
-            $query = M_class_category::with('category_to_class')->where('class_type','=',1 )->where('is_private', '=', 0)->orderBy('order','ASC')->get();
-        }else{
-            $query = M_class_category::with('category_to_class')
-            ->where('class_category', 'like', "%".$name."%")
-            ->where('is_private', '=', 0)
-            ->orWhereHas('category_to_class', function($q) use ($name) { 
-                $q->where('class_name', 'like', '%'.$name.'%');
-                $q->where('class_type', '=', 1);
-              })
-            ->orderBy('order','ASC')->get();
-        }
-      
-        if(count($query) > 0){
-            $response['metadata']['message']='success';
-            $response['metadata']['code']=200;
-            $response['data'] = $query;
-        }else{
-            $response['metadata']['message']='failed data not found';
+        $limit = $request->query('size');
+        $offset = $request->query('page');
+        if($limit == null || $offset == null){
+            $response['metadata']['message']='size and page cannot be null';
             $response['metadata']['code']=400;
+        }else{
+            if($name == null){
+                $query = M_class_category::with('category_to_class')->where('class_type','=',1 )->where('is_private', '=', 0)
+                ->skip($offset)->take($limit)->orderBy('order','ASC')->get();
+            }else{
+                $query = M_class_category::with('category_to_class')
+                ->where('class_category', 'like', "%".$name."%")
+                ->where('is_private', '=', 0)
+                ->orWhereHas('category_to_class', function($q) use ($name) { 
+                    $q->where('class_name', 'like', '%'.$name.'%');
+                    $q->where('class_type', '=', 1);
+                  })
+                ->skip($offset)->take($limit)
+                ->orderBy('order','ASC')->get();
+            }
+          
+            if(count($query) > 0){
+                $response['metadata']['message']='success';
+                $response['metadata']['code']=200;
+                $response['data'] = $query;
+            }else{
+                $response['metadata']['message']='failed data not found';
+                $response['metadata']['code']=400;
+            }
         }
+       
         return response()->json($response);
     }
 
     public function get_private_class(Request $request){
         $response = array();
         $name = $request->query('name');
-        if($name == null){
-            $query = M_class_category::with('category_to_class')->where('class_type','=',2 )->where('is_private', '=', 1)->orderBy('order','ASC')->get();
+        $limit = $request->query('size');
+        $offset = $request->query('page');
+        if($limit == null || $offset == null){
+            $response['metadata']['message']='size and page cannot be null';
+            $response['metadata']['code']=400;
         }else{
-            $query = M_class_category::with('category_to_class')
-            ->where('class_category', 'like', "%".$name."%")
-            ->where('is_private', '=', 1)
-            ->orWhereHas('category_to_class', function($q) use ($name) { 
-                $q->where('class_name', 'like', '%'.$name.'%');
-                $q->where('class_type', '=',2);
-              })
-            ->orderBy('order','ASC')->get();
+            if($name == null){
+                $query = M_class_category::with('category_to_class')->where('class_type','=',2 )->where('is_private', '=', 1)
+                ->skip($offset)->take($limit)->orderBy('order','ASC')->get();
+            }else{
+                $query = M_class_category::with('category_to_class')
+                ->where('class_category', 'like', "%".$name."%")
+                ->where('is_private', '=', 1)
+                ->orWhereHas('category_to_class', function($q) use ($name) { 
+                    $q->where('class_name', 'like', '%'.$name.'%');
+                    $q->where('class_type', '=',2);
+                  })
+                ->skip($offset)->take($limit)
+                ->orderBy('order','ASC')->get();
+            }
         }
-      
+          
         if(count($query) > 0){
             $response['metadata']['message']='success';
             $response['metadata']['code']=200;
@@ -139,6 +158,84 @@ class C_class extends Controller
         }
         return response()->json($response);
     }
+
+    public function get_our_recommendation(Request $request){
+        $response = array();
+        $limit = $request->query('size');
+        $offset = $request->query('page');
+        $memberId = $request->query('memberId');
+
+        if($limit == null || $offset == null){
+            $response['metadata']['message']='size and page cannot be null';
+            $response['metadata']['code']=400;
+        }elseif($memberId == null){
+            $response['metadata']['message']='member id cannot be null';
+            $response['metadata']['code']=400;
+        }else{
+            $query = DB::select("SELECT a.class_name,b.class_category,a.class_type,a.cover_image FROM class a 
+            inner join class_category b on a.category_id = b.id
+            WHERE a.keyword IN(SELECT recommendation FROM member_recommendation WHERE member_id='".$memberId."' )
+            ORDER BY a.class_name DESC
+            LIMIT $limit OFFSET $offset ");
+         
+            if(count($query) > 0){
+                $response['metadata']['message']='success';
+                $response['metadata']['code']=200;
+                $response['data'] = $query;
+            }else{
+                $response['metadata']['message']='failed data not found';
+                $response['metadata']['code']=400;
+            }
+        }
+        return response()->json($response);
+    }
+
+    public function get_our_recommendation_all(Request $request){
+        $response = array();
+        $memberId = $request->query('memberId');
+        $limit = $request->query('size');
+        $offset = $request->query('page');
+        $name = $request->query('name'); 
+        if($limit == null || $offset == null){
+            $response['metadata']['message']='size and page cannot be null';
+            $response['metadata']['code']=400;
+        }elseif($memberId == null){
+            $response['metadata']['message']='member id cannot be null';
+            $response['metadata']['code']=400;
+        }else{
+            if($name == null){
+                $query = M_class_category::with('category_to_class')
+                ->orWhereHas('category_to_class', function($q) use ($memberId) { 
+                    $q->where('class_type', '=',2);
+                    $q->whereRaw("keyword IN (SELECT recommendation FROM member_recommendation WHERE member_id= '".$memberId."' )");
+                  })
+                ->skip($offset)->take($limit)
+                ->orderBy('order','ASC')->get();
+            }else{
+              
+                $query = M_class_category::with('category_to_class')
+                ->orWhere('class_category', 'like', "%".$name."%")
+                ->orWhereHas('category_to_class', function($q) use ($name,$memberId) { 
+                    $q->orWhere('class_name', 'like', '%'.$name.'%');
+                    $q->where('class_type', '=',2);
+                    $q->whereRaw("keyword IN (SELECT recommendation FROM member_recommendation WHERE member_id= '".$memberId."' )");
+                  })
+                ->skip($offset)->take($limit)
+                ->orderBy('order','ASC')->get();
+            }
+        }
+          
+        if(count($query) > 0){
+            $response['metadata']['message']='success';
+            $response['metadata']['code']=200;
+            $response['data'] = $query;
+        }else{
+            $response['metadata']['message']='failed data not found';
+            $response['metadata']['code']=400;
+        }
+        return response()->json($response);
+    }
+       
 
     private function get_booking_group_class_code(){
         $query = DB::select("SELECT max(id) AS id FROM class_booking WHERE created_at ='".date("Y-m-d H:i:s")."' ");

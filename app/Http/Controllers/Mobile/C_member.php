@@ -15,20 +15,13 @@ class C_member extends Controller
             $response['metadata']['message']='id cannot be null';
             $response['metadata']['code']=400;
         }else{
-            $query = DB::select("SELECT first_name,last_name,phone_number,email,profile_picture,address,member_code from member WHERE id ='".$id."' ");
+            // $query = DB::select("SELECT first_name,last_name,phone_number,email,profile_picture,address,member_code from member WHERE id ='".$id."' ");
+            $query = M_member::with('member_to_recomendation')->where('id','=',$id)->get();
             if(count($query) > 0){
-                foreach($query as $row){
-                    $data['first_name'] = $row->first_name;
-                    $data['last_name'] = $row->last_name; 
-                    $data['phone_number'] = $row->phone_number; 
-                    $data['email'] = $row->email;
-                    $data['profile_picture'] = $row->profile_picture;
-                    $data['address'] = $row->address;
-                    $data['member_code'] = $row->member_code;
-                }
                 $response['metadata']['message']='success';
                 $response['metadata']['code']=200;
-                $response['data'] = $data;
+                $response['data'] = $query;
+              
             }else{
                 $response['metadata']['message']='failed data not found';
                 $response['metadata']['code']=400;
