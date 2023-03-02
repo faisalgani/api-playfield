@@ -5,27 +5,24 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class M_partner extends Model
+class M_partner_deals extends Model
 {
     use HasFactory;
     protected $keyType = 'string';
 	public $incrementing = false;
-	protected $table    = "partner";
+	protected $table    = "partner_deals";
     protected $hidden = ['created_at','updated_at','created_by','updated_by'];
 	protected $fillable = [
         'id',
-        'partner_name',
-        'partner_logo',
-        'about',
+        'partner_id',
+        'promo',
+        'expired_date',
+        'term',
         'active',
         'created_at',
         'updated_at',
         'created_by',
         'updated_by'
 	];
-
-    function partner_to_deals(){
-		return $this->hasMany('App\Models\M_partner_deals','partner_id', 'id');
-	}
 
 }
