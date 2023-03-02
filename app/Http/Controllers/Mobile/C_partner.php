@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\M_partner;
 use App\Models\M_partner_category;
+use App\Models\M_partner_deals;
+
 
 class C_partner extends Controller
 {
@@ -66,7 +68,7 @@ class C_partner extends Controller
             $response['metadata']['message']='id cannot be null';
             $response['metadata']['code']=400;
         }else{
-            $query = M_partner::where('id', '=', $id )->get();
+            $query = M_partner::with('partner_to_deals')->where('id', '=', $id )->get();
       
             if(count($query) > 0){
                 $response['metadata']['message']='success';
