@@ -24,6 +24,7 @@ class M_class extends Model
         'capacity',
         'location',
         'phone_number',
+        'keyword',
         'created_at',
         'updated_at',
         'created_by',

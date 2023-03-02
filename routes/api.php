@@ -63,6 +63,8 @@ Route::get('get_detail_class', [C_class::class, 'get_detail_class']);
 Route::post('group_class_booked', [C_class::class, 'group_class_booked']);
 Route::get('get_private_class', [C_class::class, 'get_private_class']);
 Route::get('upcoming_class', [C_class::class, 'get_upcoming_class']);
+Route::get('our_recommendation', [C_class::class, 'get_our_recommendation']);
+Route::get('our_recommendation_all', [C_class::class, 'get_our_recommendation_all']);
 
 
 // ROOM
