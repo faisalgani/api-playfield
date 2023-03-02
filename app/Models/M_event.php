@@ -11,12 +11,14 @@ class M_event extends Model
     protected $keyType = 'string';
 	public $incrementing = false;
 	protected $table    = "event";
+    protected $hidden = ['created_at','updated_at','created_by','updated_by'];
 	protected $fillable = [
         'id',
         'name',
         'description',
         'image',
         'event_date',
+        'contact_number',
         'location',
         'capacity',
         'price',

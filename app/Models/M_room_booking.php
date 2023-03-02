@@ -11,6 +11,7 @@ class M_room_booking extends Model
     protected $keyType = 'string';
 	public $incrementing = false;
 	protected $table    = "room_booking";
+    protected $hidden = ['created_at','updated_at','created_by','updated_by'];
 	protected $fillable = [
         'id',
         'benefits_id',

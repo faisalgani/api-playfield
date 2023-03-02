@@ -10,7 +10,8 @@ use App\Models\M_event;
 class C_event extends Controller
 {
 
-    public function get($name = null){
+    public function get(Request $request){
+        $name = $request->query('eventName');
         $response = array();
         if($name == null){
             $query =  M_event::orderBy('event_date','DESC')->get();
@@ -27,17 +28,22 @@ class C_event extends Controller
         }
         return response()->json($response);
     }
-    public function get_detail_event($id){
+    public function get_detail_event(Request $request){
         $response = array();
-        $query = M_event::with('event_to_gallery')->where('id','=',$id)->get();
-      
-        if(count($query) > 0){
-            $response['metadata']['message']='success';
-            $response['metadata']['code']=200;
-            $response['data'] = $query;
-        }else{
-            $response['metadata']['message']='failed data not found';
+        $id = $request->query('id');
+        if($id == '' || $id == null){
+            $response['metadata']['message']='id cannot be null';
             $response['metadata']['code']=400;
+        }else{
+            $query = M_event::with('event_to_gallery')->where('id','=',$id)->get();
+            if(count($query) > 0){
+                $response['metadata']['message']='success';
+                $response['metadata']['code']=200;
+                $response['data'] = $query;
+            }else{
+                $response['metadata']['message']='failed data not found';
+                $response['metadata']['code']=400;
+            }
         }
         return response()->json($response);
     }

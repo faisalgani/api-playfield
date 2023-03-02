@@ -10,8 +10,9 @@ use App\Models\M_room;
 class C_room extends Controller
 {
 
-    public function get_room($name = null){
+    public function get_room(Request $request){
         $response = array();
+        $name = $request->query('roomName');
         if($name == null){
             $query = M_room::where('active','=',1)->orderBy('room_name','ASC')->get();
         }else{
@@ -29,34 +30,46 @@ class C_room extends Controller
         return response()->json($response);
     }
 
-    public function get_detail_room($id){
+    public function get_detail_room(Request $request){
         $response = array();
-        $query = M_room::with('room_to_gallery')->where('id','=',$id)->get();
-      
-        if(count($query) > 0){
-            $response['metadata']['message']='success';
-            $response['metadata']['code']=200;
-            $response['data'] = $query;
-        }else{
-            $response['metadata']['message']='failed data not found';
+        $id = $request->query('id');
+        if($id == '' || $id == null){
+            $response['metadata']['message']='id cannot be null';
             $response['metadata']['code']=400;
+        }else{
+            $query = M_room::with('room_to_gallery')->where('id','=',$id)->get();
+            if(count($query) > 0){
+                $response['metadata']['message']='success';
+                $response['metadata']['code']=200;
+                $response['data'] = $query;
+            }else{
+                $response['metadata']['message']='failed data not found';
+                $response['metadata']['code']=400;
+            }
         }
+      
         return response()->json($response);
     }
 
-    public function get_room_schedule($id,$date){
+    public function get_room_schedule(Request $request){
         $response = array();
-        $query = DB::select("SELECT a.id,a.room_id,a.start_time,a.end_time,CASE WHEN EXISTS (
-            SELECT id FROM room_booking_detail b WHERE b.room_schedule_id=a.id AND b.date_booked='".$date."') THEN 1 ELSE 0 END AS is_booked 
-            FROM room_schedule a INNER JOIN room c ON c.id=a.room_id WHERE a.room_id='".$id."' AND c.active=1");
-      
-        if(count($query) > 0){
-            $response['metadata']['message']='success';
-            $response['metadata']['code']=200;
-            $response['data'] = $query;
+        $id = $request->query('id');
+        $date = $request->query('date');
+        if($id == '' || $date == null){
+            $response['metadata']['message']='id or date cannot be null';
+            $response['metadata']['code']=400; 
         }else{
-            $response['metadata']['message']='failed data not found';
-            $response['metadata']['code']=400;
+            $query = DB::select("SELECT a.id,a.room_id,a.start_time,a.end_time,CASE WHEN EXISTS (
+                SELECT id FROM room_booking_detail b WHERE b.room_schedule_id=a.id AND b.date_booked='".$date."') THEN 1 ELSE 0 END AS is_booked 
+                FROM room_schedule a INNER JOIN room c ON c.id=a.room_id WHERE a.room_id='".$id."' AND c.active=1");
+            if(count($query) > 0){
+                $response['metadata']['message']='success';
+                $response['metadata']['code']=200;
+                $response['data'] = $query;
+            }else{
+                $response['metadata']['message']='failed data not found';
+                $response['metadata']['code']=400;
+            }
         }
         return response()->json($response);
     }

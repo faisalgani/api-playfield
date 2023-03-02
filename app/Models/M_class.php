@@ -11,6 +11,7 @@ class M_class extends Model
     protected $keyType = 'string';
 	public $incrementing = false;
 	protected $table    = "class";
+    protected $hidden = ['created_at','updated_at','created_by','updated_by'];
 	protected $fillable = [
         'id',
         'category_id',
@@ -22,6 +23,7 @@ class M_class extends Model
         'cover_image',
         'capacity',
         'location',
+        'phone_number',
         'created_at',
         'updated_at',
         'created_by',
