@@ -5,18 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class M_event_gallery extends Model
+class M_partner extends Model
 {
     use HasFactory;
     protected $keyType = 'string';
 	public $incrementing = false;
-	protected $table    = "event_gallery";
+	protected $table    = "partner";
     protected $hidden = ['created_at','updated_at','created_by','updated_by'];
 	protected $fillable = [
         'id',
-        'evebt_id',
-        'image',
-        'video',
+        'partner_name',
+        'partner_logo',
+        'about',
+        'active',
         'created_at',
         'updated_at',
         'created_by',

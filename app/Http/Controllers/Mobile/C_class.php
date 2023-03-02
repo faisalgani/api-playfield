@@ -11,9 +11,22 @@ use App\Models\M_class;
 class C_class extends Controller
 {
 
-    public function get_group_class(){
+    public function get_group_class(Request $request){
         $response = array();
-        $query = M_class_category::with('category_to_class')->orderBy('order','ASC')->get();
+        $name = $request->query('name');
+        if($name == null){
+            $query = M_class_category::with('category_to_class')->where('class_type','=',1 )->where('is_private', '=', 0)->orderBy('order','ASC')->get();
+        }else{
+            $query = M_class_category::with('category_to_class')
+            ->where('class_category', 'like', "%".$name."%")
+            ->where('is_private', '=', 0)
+            ->orWhereHas('category_to_class', function($q) use ($name) { 
+                $q->where('class_name', 'like', '%'.$name.'%');
+                $q->where('class_type', '=', 1);
+              })
+            ->orderBy('order','ASC')->get();
+        }
+      
         if(count($query) > 0){
             $response['metadata']['message']='success';
             $response['metadata']['code']=200;
@@ -25,9 +38,21 @@ class C_class extends Controller
         return response()->json($response);
     }
 
-    public function get_detail_class($id){
+    public function get_private_class(Request $request){
         $response = array();
-        $query = M_class::with('class_to_gallery')->where('id','=',$id)->get();
+        $name = $request->query('name');
+        if($name == null){
+            $query = M_class_category::with('category_to_class')->where('class_type','=',2 )->where('is_private', '=', 1)->orderBy('order','ASC')->get();
+        }else{
+            $query = M_class_category::with('category_to_class')
+            ->where('class_category', 'like', "%".$name."%")
+            ->where('is_private', '=', 1)
+            ->orWhereHas('category_to_class', function($q) use ($name) { 
+                $q->where('class_name', 'like', '%'.$name.'%');
+                $q->where('class_type', '=',2);
+              })
+            ->orderBy('order','ASC')->get();
+        }
       
         if(count($query) > 0){
             $response['metadata']['message']='success';
@@ -36,6 +61,26 @@ class C_class extends Controller
         }else{
             $response['metadata']['message']='failed data not found';
             $response['metadata']['code']=400;
+        }
+        return response()->json($response);
+    }
+
+    public function get_detail_class(Request $request){
+        $id = $request->query('id');
+        $response = array();
+        if($id == '' || $id == null){
+            $response['metadata']['message']='id cannot be null';
+            $response['metadata']['code']=400;
+        }else{
+            $query = M_class::with('class_to_gallery')->where('id','=',$id)->get();
+            if(count($query) > 0){
+                $response['metadata']['message']='success';
+                $response['metadata']['code']=200;
+                $response['data'] = $query;
+            }else{
+                $response['metadata']['message']='failed data not found';
+                $response['metadata']['code']=400;
+            }
         }
         return response()->json($response);
     }
@@ -63,6 +108,34 @@ class C_class extends Controller
             DB::rollBack();
             $response['metadata']['message']='failed booked group class';
             $response['metadata']['code']=200;
+        }
+        return response()->json($response);
+    }
+
+    public function get_upcoming_class(Request $request){
+        $response = array();
+        $limit = $request->query('size');
+        $offset = $request->query('page');
+        $startDay = date("Y-m-d").' 00:00:00';
+        $endDay = date('Y-m-d',strtotime(date("Y-m-d") . "+1 days")).' 00:00:00';
+        if($limit == null || $offset == null){
+            $response['metadata']['message']='size and page cannot be null';
+            $response['metadata']['code']=400;
+        }else{
+            $query = DB::select("SELECT a.class_name,b.class_category,a.class_type,a.start_time,a.end_time FROM class a 
+            inner join class_category b on a.category_id = b.id
+            WHERE a.start_time > '".$startDay."' AND a.start_time < '".$endDay."'
+            ORDER BY a.start_time DESC
+            LIMIT $limit OFFSET $offset ");
+         
+            if(count($query) > 0){
+                $response['metadata']['message']='success';
+                $response['metadata']['code']=200;
+                $response['data'] = $query;
+            }else{
+                $response['metadata']['message']='failed data not found';
+                $response['metadata']['code']=400;
+            }
         }
         return response()->json($response);
     }

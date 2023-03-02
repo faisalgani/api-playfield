@@ -26,18 +26,24 @@ class C_facilities extends Controller
         return response()->json($response);
     }
 
-    public function get_detail($id){
+    public function get_detail(Request $request){
+        $id = $request->query('id');
         $response = array();
-        $query = M_facilities::where('id','=',$id)->get();
-      
-        if(count($query) > 0){
-            $response['metadata']['message']='success';
-            $response['metadata']['code']=200;
-            $response['data'] = $query;
-        }else{
-            $response['metadata']['message']='failed data not found';
+        if($id == '' || $id == null){
+            $response['metadata']['message']='id cannot be null';
             $response['metadata']['code']=400;
+        }else{
+            $query = M_facilities::where('id','=',$id)->get();
+            if(count($query) > 0){
+                $response['metadata']['message']='success';
+                $response['metadata']['code']=200;
+                $response['data'] = $query;
+            }else{
+                $response['metadata']['message']='failed data not found';
+                $response['metadata']['code']=400;
+            }
         }
+       
         return response()->json($response);
     }
 }

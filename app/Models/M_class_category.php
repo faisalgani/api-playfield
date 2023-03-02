@@ -11,10 +11,12 @@ class M_class_category extends Model
     protected $keyType = 'string';
 	public $incrementing = false;
 	protected $table    = "class_category";
+    protected $hidden = ['created_at','updated_at','created_by','updated_by'];
 	protected $fillable = [
         'id',
         'class_category',
         'order',
+        'is_private',
         'active',
         'created_at',
         'updated_at',

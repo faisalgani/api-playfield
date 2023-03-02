@@ -11,6 +11,7 @@ class M_news_category extends Model
     protected $keyType = 'string';
 	public $incrementing = false;
 	protected $table    = "news_category";
+    protected $hidden = ['created_at','updated_at','created_by','updated_by'];
 	protected $fillable = [
         'id',
         'category',

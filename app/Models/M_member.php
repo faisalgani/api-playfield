@@ -11,6 +11,7 @@ class M_member extends Model
     protected $keyType = 'string';
 	public $incrementing = false;
 	protected $table    = "member";
+    protected $hidden = ['created_at','updated_at','created_by','updated_by'];
 	protected $fillable = [
         'id',
         'member_code',
